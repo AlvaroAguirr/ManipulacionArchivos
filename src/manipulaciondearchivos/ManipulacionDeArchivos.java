@@ -16,11 +16,10 @@ import java.io.InputStreamReader;
  */
 public class ManipulacionDeArchivos {
     
-    public static int ContarLineasArchivo(String name){
+    public static int countFileLine(String name){
     File archivo;
     FileReader reader;
     BufferedReader bufer;
-    String linea;
     
     int numLinea=0; 
     
@@ -30,7 +29,7 @@ public class ManipulacionDeArchivos {
     reader = new FileReader(archivo);
     bufer = new BufferedReader(reader);
     // ContR Las lineas que contiene el ArChiBO
-    while((linea = bufer.readLine())!=null){
+    while((bufer.readLine())!=null){
         numLinea++;
         }
      reader.close();
@@ -42,14 +41,23 @@ public class ManipulacionDeArchivos {
     }
    
 
-public static void leerArchivo(String name) throws IOException{
+public static String[] fileToStringArray(String name) throws IOException{
     
     File archivo;
     FileReader reader;
     BufferedReader bufer;
     String linea;
+    String[] array=null;
+    int t;
+    int i=0;
     
-    try{
+    try{ 
+       
+        // obtener el tamaño del archivo
+        t=countFileLine(name);
+        // con el tamaño del archivo, contruir el arrelgo 
+        array= new String[t];
+        
     //  crear un apuntar al archovo fisico
     archivo = new File("C:\\archivos\\"+ name + ".txt");
     // abrir le archivo para lectura 
@@ -58,29 +66,32 @@ public static void leerArchivo(String name) throws IOException{
     bufer = new BufferedReader(reader);
     // Lectura de contenido del ArChiBO
     while((linea = bufer.readLine())!=null){
-        System.out.println("Linea leida: "+ linea);
+       // System.out.println("Linea leida: "+ linea);
+       array[i]=linea;
+       i++;
+      
         }
      reader.close();
     } catch (Exception e){
         System.out.println("Error al leer el archivo" + e.toString());
     }
-    
+    return array;
     
 }
     public static void main(String[] args) throws IOException {
         BufferedReader bufer= new BufferedReader(new InputStreamReader(System.in));
         
-        String fileName;
-        int t;
-        
+        String fileName;   
+        String[] juegos;
         
         System.out.println("lectura del un archoivo de texto");
         System.out.println("Escribe el nombre del archivo");
         fileName= bufer.readLine();
-        
-        leerArchivo(fileName);
-        t=ContarLineasArchivo(fileName);
-        System.out.println("contar lineas de archivo "+fileName+" : "+ t);
+        juegos= fileToStringArray(fileName);
+        System.out.println("contenido del arreglo de juegos");
+        for(String unlinea : juegos){
+            System.out.println(unlinea);
+        }
     }
     
 }
